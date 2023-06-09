@@ -1,0 +1,1 @@
+Olá, jogo criado para exercitar conhecimentos de JavaScript aprendidos em sala. Pretendo aprimorar o código e separar os elementos do arquivo html principal.
