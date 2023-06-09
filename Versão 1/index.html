@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Corrida</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        
+        #game-container {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            margin: 0 auto;
+            border: 1px solid white;
+            overflow: hidden;
+        }
+        
+        #character {
+            position: absolute;
+            bottom: 0;
+            left: 50px;
+            width: 50px;
+            height: 50px;
+            background-color: white;
+        }
+        
+        .obstacle {
+            position: absolute;
+            width: 20px;
+            height: 50px;
+            background-color: white;
+        }
+        
+        #score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+        }
+        
+        #lives {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 20px;
+        }
+        
+        #countdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            font-weight: bold;
+        }
+        
+        #start-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            display: block;
+        }
+        
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 30px;
+            background-color: black;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Corrida</h1>
+    
+    <div id="game-container">
+        <div id="character"></div>
+        <div id="score">Pontuação: <span id="score-value">0</span></div>
+        <div id="lives">Vidas: <span id="lives-value">3</span></div>
+        <div id="countdown">3</div>
+        <div id="start-message">Pressione a seta para cima para começar</div>
+    </div>
+    
+    <footer>Thálice Lopes da Silva</footer>
+    
+    <script>
+        // Variáveis
+        var character = document.getElementById("character");
+        var gameContainer = document.getElementById("game-container");
+        var scoreElement = document.getElementById("score-value");
+        var livesElement = document.getElementById("lives-value");
+        var countdownElement = document.getElementById("countdown");
+        var startMessage = document.getElementById("start-message");
+        var isJumping = false;
+        var gravity = 0.9;
+        var obstacleInterval;
+        var score = 0;
+        var lives = 3;
+        var countdown = 3;
+        var countdownInterval;
+        var gameRunning = false;
+        
+        // Movimento do personagem
+        function handleKeyDown(event) {
+            if (!isJumping && event.keyCode === 38 && gameRunning) {
+                isJumping = true;
+                jump();
+            }
+        }
+        
+        // Salto do personagem
+        function jump() {
+            var jumpCount = 0;
+            var jumpInterval = setInterval(function() {
+                var characterBottom = parseInt(window.getComputedStyle(character).getPropertyValue("bottom"));
+                if (jumpCount < 15) {
+                    character.style.bottom = (characterBottom + 10) + "px";
+                } else if (jumpCount >= 15 && jumpCount < 30) {
+                    character.style.bottom = (characterBottom - 10) + "px";
+                } else {
+                    clearInterval(jumpInterval);
+                    isJumping = false;
+                }
+                jumpCount++;
+            }, 30);
+        }
+        
+        // Geração de obstáculos
+        function generateObstacle() {
+            var obstacle = document.createElement("div");
+            obstacle.classList.add("obstacle");
+            obstacle.style.left = "600px";
+            obstacle.style.bottom = "0";
+            gameContainer.appendChild(obstacle);
+            
+            var obstacleInterval = setInterval(function() {
+                var obstacleLeft = parseInt(window.getComputedStyle(obstacle).getPropertyValue("left"));
+                if (obstacleLeft > -20) {
+                    obstacle.style.left = (obstacleLeft - 5) + "px";
+                } else {
+                    obstacle.parentNode.removeChild(obstacle);
+                    clearInterval(obstacleInterval);
+                }
+                
+                var characterBottom = parseInt(window.getComputedStyle(character).getPropertyValue("bottom"));
+                var obstacleBottom = parseInt(window.getComputedStyle(obstacle).getPropertyValue("bottom"));
+                if (obstacleLeft > 0 && obstacleLeft < 50 && characterBottom <= obstacleBottom + 50) {
+                    clearInterval(obstacleInterval);
+                    lives--;
+                    livesElement.textContent = lives;
+                    
+                    if (lives === 0) {
+                        gameOver();
+                    }
+                } else if (obstacleLeft === 0) {
+                    score += 10;
+                    scoreElement.textContent = score;
+                }
+            }, 10);
+        }
+        
+        // Iniciar o jogo
+        function startGame() {
+            gameRunning = true;
+            startMessage.style.display = "none";
+            countdownElement.style.display = "block";
+            var countdownInterval = setInterval(function() {
+                countdown--;
+                countdownElement.textContent = countdown;
+                
+                if (countdown === 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.style.display = "none";
+                    document.addEventListener("keydown", handleKeyDown);
+                    obstacleInterval = setInterval(generateObstacle, 1500);
+                }
+            }, 1000);
+        }
+        
+        // Fim de jogo
+        function gameOver() {
+            clearInterval(obstacleInterval);
+            document.removeEventListener("keydown", handleKeyDown);
+            alert("Game over! Pontuação: " + score);
+        }
+        
+        // Iniciar o jogo ao carregar a página
+        document.addEventListener("DOMContentLoaded", function() {
+            character.style.bottom = "0";
+            countdownElement.style.display = "none";
+            countdownElement.textContent = countdown;
+        });
+        
+        // Iniciar o jogo quando a tecla PgUp for pressionada
+        document.addEventListener("keydown", function(event) {
+            if (event.keyCode === 38 && !gameRunning) {
+                startGame();
+            }
+        });
+    </script>
+</body>
+</html>
