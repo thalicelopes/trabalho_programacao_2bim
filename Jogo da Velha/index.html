@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jogo da Velha com Mini-Tabuleiros</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <h1>Jogo da Velha com Mini-Tabuleiros</h1>
+    <div id="players">
+        <label for="player1">Jogador 1:</label>
+        <input type="text" id="player1" placeholder="Digite o nome do jogador 1">
+        <label for="player2">Jogador 2:</label>
+        <input type="text" id="player2" placeholder="Digite o nome do jogador 2">
+        <button id="start-button">Iniciar Jogo</button>
+    </div>
+    <div id="board">
+        <div class="main-board">
+            <div class="mini-board">
+                <div class="mini-field" onclick="playTurn(0, 0)"></div>
+                <div class="mini-field" onclick="playTurn(0, 1)"></div>
+                <div class="mini-field" onclick="playTurn(0, 2)"></div>
+            </div>
+            <div class="mini-board">
+                <div class="mini-field" onclick="playTurn(1, 0)"></div>
+                <div class="mini-field" onclick="playTurn(1, 1)"></div>
+                <div class="mini-field" onclick="playTurn(1, 2)"></div>
+            </div>
+            <div class="mini-board">
+                <div class="mini-field" onclick="playTurn(2, 0)"></div>
+                <div class="mini-field" onclick="playTurn(2, 1)"></div>
+                <div class="mini-field" onclick="playTurn(2, 2)"></div>
+            </div>
+        </div>
+        <div class="main-board">
+            <div class="mini-board">
+                <div class="mini-field" onclick="playTurn(3, 0)"></div>
+                <div class="mini-field" onclick="playTurn(3, 1)"></div>
+                <div class="mini-field" onclick="playTurn(3, 2)"></div>
+            </div>
+            <div class="mini-board">
+                <div class="mini-field" onclick="playTurn(4, 0)"></div>
+                <div class="mini-field" onclick="playTurn(4, 1)"></div>
+                <div class="mini-field" onclick="playTurn(4, 2)"></div>
+            </div>
+            <div class="mini-board">
+                <div class="mini-field" onclick="playTurn(5, 0)"></div>
+                <div class="mini-field" onclick="playTurn(5, 1)"></div>
+                <div class="mini-field" onclick="playTurn(5, 2)"></div>
+            </div>
+        </div>
+        <div class="main-board">
+            <div class="mini-board">
+                <div class="mini-field" onclick="playTurn(6, 0)"></div>
+                <div class="mini-field" onclick="playTurn(6, 1)"></div>
+                <div class="mini-field" onclick="playTurn(6, 2)"></div>
+            </div>
+            <div class="mini-board">
+                <div class="mini-field" onclick="playTurn(7, 0)"></div>
+                <div class="mini-field" onclick="playTurn(7, 1)"></div>
+                <div class="mini-field" onclick="playTurn(7, 2)"></div>
+            </div>
+            <div class="mini-board">
+                <div class="mini-field" onclick="playTurn(8, 0)"></div>
+                <div class="mini-field" onclick="playTurn(8, 1)"></div>
+                <div class="mini-field" onclick="playTurn(8, 2)"></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
